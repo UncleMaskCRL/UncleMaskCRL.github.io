@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    
+
+    <title>
+      拓扑排序算法 | UncleMask`s Laboratory 
+    </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+      <meta name="author" content="UncleMask">
+    
+    
+
+    <meta name="description" content="拓扑排序是一种将有向图中的顶点以线性方式进行排序。即对于任何连接自顶点u到顶点v的有向边uv，在最后的排序结果中，顶点u总是在顶点v的前面。比较经典的例子就是选课，在选择一门高年级课之前你需要先上过这门课的基础课程。比如你在上《高等有机化学》之前必须要先修过《基础有机化学》这门课。在图中的表达就是《基础有机化学》指向《高等有机化学》，指向谁就是要后修哪门课。   偏序和全序这两个是离散数学的概念（">
+<meta name="keywords" content="算法,模板,拓扑">
+<meta property="og:type" content="article">
+<meta property="og:title" content="拓扑排序算法 | UncleMask`s Laboratory">
+<meta property="og:url" content="http://yoursite.com/2018/01/17/18-1-16-topo/index.html">
+<meta property="og:site_name" content="UncleMask`s Laboratory">
+<meta property="og:description" content="拓扑排序是一种将有向图中的顶点以线性方式进行排序。即对于任何连接自顶点u到顶点v的有向边uv，在最后的排序结果中，顶点u总是在顶点v的前面。比较经典的例子就是选课，在选择一门高年级课之前你需要先上过这门课的基础课程。比如你在上《高等有机化学》之前必须要先修过《基础有机化学》这门课。在图中的表达就是《基础有机化学》指向《高等有机化学》，指向谁就是要后修哪门课。   偏序和全序这两个是离散数学的概念（">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-01-17T05:10:56.402Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="拓扑排序算法 | UncleMask`s Laboratory">
+<meta name="twitter:description" content="拓扑排序是一种将有向图中的顶点以线性方式进行排序。即对于任何连接自顶点u到顶点v的有向边uv，在最后的排序结果中，顶点u总是在顶点v的前面。比较经典的例子就是选课，在选择一门高年级课之前你需要先上过这门课的基础课程。比如你在上《高等有机化学》之前必须要先修过《基础有机化学》这门课。在图中的表达就是《基础有机化学》指向《高等有机化学》，指向谁就是要后修哪门课。   偏序和全序这两个是离散数学的概念（">
+    
+    
+    
+      <link rel="icon" type="image/x-icon" href="/favicon.png">
+    
+    <link rel="stylesheet" href="../../../../css/uno.css">
+    <link rel="stylesheet" href="../../../../css/highlight.css">
+    <link rel="stylesheet" href="../../../../css/archive.css">
+    <link rel="stylesheet" href="../../../../css/china-social-icon.css">
+
+</head>
+<body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+
+<header class="panel-cover panel-cover--collapsed">
+
+
+  <div class="panel-main">
+
+  
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        
+
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage">UncleMask`s Laboratory</a></h1>
+        <hr class="panel-cover__divider" />
+
+        
+        <p class="panel-cover__description">
+          Just Do What You Want
+        </p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+
+              
+                
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">首页</a></li>
+              
+                
+                <li class="navigation__item"><a href="/about" title="" class="">关于</a></li>
+              
+                
+                <li class="navigation__item"><a href="/archive" title="" class="">统计</a></li>
+              
+
+            </ul>
+          </nav>
+
+          <!-- ----------------------------
+To add a new social icon simply duplicate one of the list items from below
+and change the class in the <i> tag to match the desired social network
+and then add your link to the <a>. Here is a full list of social network
+classes that you can use:
+
+    icon-social-500px
+    icon-social-behance
+    icon-social-delicious
+    icon-social-designer-news
+    icon-social-deviant-art
+    icon-social-digg
+    icon-social-dribbble
+    icon-social-facebook
+    icon-social-flickr
+    icon-social-forrst
+    icon-social-foursquare
+    icon-social-github
+    icon-social-google-plus
+    icon-social-hi5
+    icon-social-instagram
+    icon-social-lastfm
+    icon-social-linkedin
+    icon-social-medium
+    icon-social-myspace
+    icon-social-path
+    icon-social-pinterest
+    icon-social-rdio
+    icon-social-reddit
+    icon-social-skype
+    icon-social-spotify
+    icon-social-stack-overflow
+    icon-social-steam
+    icon-social-stumbleupon
+    icon-social-treehouse
+    icon-social-tumblr
+    icon-social-twitter
+    icon-social-vimeo
+    icon-social-xbox
+    icon-social-yelp
+    icon-social-youtube
+    icon-social-zerply
+    icon-mail
+
+-------------------------------->
+
+<!-- add social info here -->
+
+
+
+<nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+    
+      <!-- Qzone -->
+      <li class="navigation__item">
+        <a href="https://user.qzone.qq.com/934560304" title="Huno on Qzone">
+          <i class='icon cs-icon-qzone'></i>
+          <span class="label">Qzone</span>
+        </a>
+      </li>
+    
+
+
+    
+    <!-- China social icon -->
+    <!--
+    
+      <li class="navigation__item">
+        <a href="" title="">
+          <i class='icon cs-icon-douban'></i>
+          <span class="label">Douban</span>
+        </a>
+      </li>
+
+      <li class="navigation__item">
+        <a href="" title="">
+          <i class='icon cs-icon-weibo'></i>
+          <span class="label">Weibo</span>
+        </a>
+      </li>
+
+    -->
+
+
+
+  </ul>
+</nav>
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner entry">
+            
+
+<article class="post-container post-container--single">
+
+  <header class="post-header">
+    
+    <h1 class="post-title">拓扑排序算法</h1>
+
+    
+
+    <div class="post-meta">
+      <time datetime="2018-01-17" class="post-meta__date date">2018-01-17</time> 
+
+      <span class="post-meta__tagss tags">
+
+          
+            <font class="categories">
+            &#8226; 分类:
+            <a class="categories-link" href="../../../../categories/计算机/">计算机</a>, <a class="categories-link" href="../../../../categories/计算机/原创/">原创</a>
+            </font>
+          
+
+          
+             &#8226; 标签:
+            <font class="tags">
+              <a class="tags-link" href="../../../../tags/拓扑/">拓扑</a>, <a class="tags-link" href="../../../../tags/模板/">模板</a>, <a class="tags-link" href="../../../../tags/算法/">算法</a>
+            </font>
+          
+
+      </span>
+    </div>
+    
+    
+
+  </header>
+
+  <section id="post-content" class="article-content post">
+    <p><strong>拓扑排序是一种将有向图中的顶点以线性方式进行排序。即对于任何连接自顶点u到顶点v的有向边uv，在最后的排序结果中，顶点u总是在顶点v的前面。</strong><br>比较经典的例子就是选课，在选择一门高年级课之前你需要先上过这门课的基础课程。比如你在上《高等有机化学》之前必须要先修过《基础有机化学》这门课。在图中的表达就是《基础有机化学》指向《高等有机化学》，指向谁就是要后修哪门课。  </p>
+<h2 id="偏序和全序"><a href="#偏序和全序" class="headerlink" title="偏序和全序"></a>偏序和全序</h2><p>这两个是离散数学的概念（mmp我们不上这门课），偏序的意思就是对任意两点不管他们有没有先后关系，只要不存在矛盾关系即为偏序的意义。例如，<code>A -&gt; B -&gt; C -&gt; A</code>就不是偏序的。而全序是偏序的一种特殊情况，即为任意两个点要有明确的关系。例如 <code>A -&gt; B -&gt; C -&gt; A</code>和<code>A -&gt; D -&gt; C -&gt; A</code>其中 C 和 D 就没有明确的前后顺序，则不能说它是满足全序的，只是满足偏序的情况。<br>对于一种排序算法，我们的评价指标之一就是它是否稳定，即相同的元素出现顺序有没有被改变。比如我们说快排是不稳定的排序，就是因为它无法判断相同值的元素的顺序。而比较稳定的排序，比如冒泡、插排等，它们在排序的时候，对于相同值的元素还会比较一个潜在的条件，也就是这个元素在队列中的位置。<br>之所以要提到这两个概念，就是因为如果一个图的所有点都满足全序的条件，那么这个图的拓扑排序只会有一种结果。</p>
+<h2 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h2><p>以下是关于拓扑排序的一段伪代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">S:初始图中入度为0的顶点的集合</span><br><span class="line">L:拓扑排序的结果</span><br><span class="line">while(S不为空)</span><br><span class="line">&#123;</span><br><span class="line">  从S中取出一个点n;</span><br><span class="line">  将n加入L;</span><br><span class="line">  for (所有与n相连的点)</span><br><span class="line">  &#123;</span><br><span class="line">    在m的入度中删除一条边;</span><br><span class="line">    if (m的入度为0)</span><br><span class="line">      将m加入S;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">if (图中仍有边)</span><br><span class="line">  return error; (证明其中存在至少一个环路)</span><br><span class="line">else</span><br><span class="line">  return L;</span><br></pre></td></tr></table></figure></p>
+<h2 id="拓扑排序和哈密顿路径"><a href="#拓扑排序和哈密顿路径" class="headerlink" title="拓扑排序和哈密顿路径"></a>拓扑排序和哈密顿路径</h2><p>对于一个DAG(Directed Acyclic Graph，有向无环图)，若其中的任意两点都存在可以直接确定的先后关系时，那么它的拓扑排序是唯一的，因为它们形成了全序的关系。<br>图中是否存在哈密顿路径的关键在于确定图中的顶点是否存在全序的关系。因此只要设计一种算法遍历图中的所有点对，验证它们之间有确定的先后关系，那么我们就可以确定图中是有哈密顿路径的。但是这种算法效率太低，其原因就是没有用到传递性。以比较1,2,3三个整数为例，按照之前的思想，我们分别对(1,2)，(2,3)，(1,3)进行比较，这样需要三次比较，但是1和3的那次比较明显是多余的。<br>为了能用上传递性的规则，我们可以先进行拓扑排序，然后再依次比较相邻的顶点是否具有一致的前后关系。若满足该条件，那么基本可以确定在这个图中是含有哈密顿路径的，反之则没有。  </p>
+<h3 id="相关例题"><a href="#相关例题" class="headerlink" title="相关例题"></a>相关例题</h3><p>  HDOJ 5438</p>
+
+  </section>
+
+  <section class="post-comments">
+
+    <!-- 将评论系统（例如Disqus、多说、友言、畅言等）提供的代码片段粘贴在这里 -->
+    <!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js"></script>
+<!-- UY END -->
+</section>
+
+
+</article>
+
+
+            <footer class="footer">
+
+    <span class="footer__copyright">&copy; 2014-2015. | 由<a href="https://hexo.io/">Hexo</a>强力驱动 | 主题<a href="https://github.com/someus/huno">Huno</a></span>
+    
+</footer>
+        </div>
+    </div>
+
+    <!-- js files -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/scale.fix.js"></script>
+    
+
+    
+
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript"> 
+        $(document).ready(function(){
+            MathJax.Hub.Config({ 
+                tex2jax: {inlineMath: [['[latex]','[/latex]'], ['\\(','\\)']]} 
+            });
+        });
+    </script>
+
+
+    
+
+    <script src="/js/awesome-toc.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.awesome_toc({
+                overlay: true,
+                contentId: "post-content",
+            });
+        });
+    </script>
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-112385601-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-112385601-1');
+</script>
+
+    
+    <!--kill ie6 -->
+<!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+
+</body>
+</html>
