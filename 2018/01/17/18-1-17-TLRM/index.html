@@ -7,7 +7,7 @@
     
 
     <title>
-      18_1_17_TLRM | UncleMask`s Laboratory 
+      图论入门（不定期更新） | UncleMask`s Laboratory 
     </title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -16,17 +16,21 @@
     
     
 
-    <meta name="description" content="这里面什么都有，就是没有有用的东西">
+    <meta name="description" content="概述 图是一种比树和数组更复杂的数据结构，一般来说由顶点和边组成。通过边的连通形式的不同可以简单分类为无向图和有向图。     图的储存对于绝大部分算法题都需要记录下边的具体信息，故此就有了两种储存方式。第一种即为通过邻接表矩阵来记录对于顶点Vi和顶点Vj，若有边，则(Vi,Vj)=1，否则(Vi,Vj)=0。若该图是一个无向图，那么它的邻接矩阵一定是以对角线为轴对称。这种储存方式虽然很一目了然，">
+<meta name="keywords" content="算法,图论">
 <meta property="og:type" content="article">
-<meta property="og:title" content="18_1_17_TLRM | UncleMask`s Laboratory">
+<meta property="og:title" content="图论入门（不定期更新） | UncleMask`s Laboratory">
 <meta property="og:url" content="http://yoursite.com/2018/01/17/18-1-17-TLRM/index.html">
 <meta property="og:site_name" content="UncleMask`s Laboratory">
-<meta property="og:description" content="这里面什么都有，就是没有有用的东西">
+<meta property="og:description" content="概述 图是一种比树和数组更复杂的数据结构，一般来说由顶点和边组成。通过边的连通形式的不同可以简单分类为无向图和有向图。     图的储存对于绝大部分算法题都需要记录下边的具体信息，故此就有了两种储存方式。第一种即为通过邻接表矩阵来记录对于顶点Vi和顶点Vj，若有边，则(Vi,Vj)=1，否则(Vi,Vj)=0。若该图是一个无向图，那么它的邻接矩阵一定是以对角线为轴对称。这种储存方式虽然很一目了然，">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-01-17T04:27:55.175Z">
+<meta property="og:image" content="http://img.blog.csdn.net/20140717234737640">
+<meta property="og:image" content="http://img.blog.csdn.net/20140730174522562">
+<meta property="og:updated_time" content="2018-01-18T03:39:30.723Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="18_1_17_TLRM | UncleMask`s Laboratory">
-<meta name="twitter:description" content="这里面什么都有，就是没有有用的东西">
+<meta name="twitter:title" content="图论入门（不定期更新） | UncleMask`s Laboratory">
+<meta name="twitter:description" content="概述 图是一种比树和数组更复杂的数据结构，一般来说由顶点和边组成。通过边的连通形式的不同可以简单分类为无向图和有向图。     图的储存对于绝大部分算法题都需要记录下边的具体信息，故此就有了两种储存方式。第一种即为通过邻接表矩阵来记录对于顶点Vi和顶点Vj，若有边，则(Vi,Vj)=1，否则(Vi,Vj)=0。若该图是一个无向图，那么它的邻接矩阵一定是以对角线为轴对称。这种储存方式虽然很一目了然，">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20140717234737640">
     
     
     
@@ -196,7 +200,7 @@ classes that you can use:
 
   <header class="post-header">
     
-    <h1 class="post-title">18_1_17_TLRM</h1>
+    <h1 class="post-title">图论入门（不定期更新）</h1>
 
     
 
@@ -206,7 +210,17 @@ classes that you can use:
       <span class="post-meta__tagss tags">
 
           
+            <font class="categories">
+            &#8226; 分类:
+            <a class="categories-link" href="../../../../categories/计算机/">计算机</a>, <a class="categories-link" href="../../../../categories/计算机/原创/">原创</a>
+            </font>
+          
 
+          
+             &#8226; 标签:
+            <font class="tags">
+              <a class="tags-link" href="../../../../tags/图论/">图论</a>, <a class="tags-link" href="../../../../tags/算法/">算法</a>
+            </font>
           
 
       </span>
@@ -217,7 +231,17 @@ classes that you can use:
   </header>
 
   <section id="post-content" class="article-content post">
-    
+    <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><strong> 图是一种比树和数组更复杂的数据结构，一般来说由顶点和边组成。通过边的连通形式的不同可以简单分类为无向图和有向图。  </strong><br><img src="http://img.blog.csdn.net/20140717234737640" alt="">  </p>
+<h2 id="图的储存"><a href="#图的储存" class="headerlink" title="图的储存"></a>图的储存</h2><p>对于绝大部分算法题都需要记录下边的具体信息，故此就有了两种储存方式。<br>第一种即为通过邻接表矩阵来记录对于顶点Vi和顶点Vj，若有边，则(Vi,Vj)=1，否则(Vi,Vj)=0。若该图是一个无向图，那么它的邻接矩阵一定是以对角线为轴对称。这种储存方式虽然很一目了然，但是当这个图中具有n个点时，需要的空间为n²个位置来储存是否有连边<br>同样的，如果用邻接表来储存图中边的信息，如下：<br><img src="http://img.blog.csdn.net/20140730174522562" alt=""><br>可以看到邻接表的实质其实就是链式储存。不过其实我觉得开一个vector数组也是完全ok的。</p>
+<h2 id="常用概念"><a href="#常用概念" class="headerlink" title="常用概念"></a>常用概念</h2><ol>
+<li>顶点的度，与顶点i相关联的边的数量，记为D(i)。在有向图中还会分别记为入度ID和出度OD，这两个概念在拓扑排序中会有应用。</li>
+<li>边数较少的叫做稀疏图，边数较多则叫稠密图。</li>
+<li>有时边是带有权值的，这个权值可以表示从一个顶点到另一个顶点的距离、代价、耗费等。这样的图也称为带权图。</li>
+<li>无环图：没有环的图(acyclic graph)。在有向图中，那就是有向无环图。</li>
+<li>如果在图中任意两个点都存在路径，那么称其为连通图  <h2 id="衍生概念"><a href="#衍生概念" class="headerlink" title="衍生概念"></a>衍生概念</h2></li>
+<li>欧拉回路和欧拉路径<br>将图中的所有路径走过恰好一次，那么该路径称为欧拉路径。相应的，如果这条路径是一条回路，那么称之为欧拉回路。  </li>
+</ol>
+
   </section>
 
   <section class="post-comments">
