@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    
+
+    <title>
+      LCA问题的RMQ与倍增解法 | UncleMask`s Laboratory 
+    </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+      <meta name="author" content="UncleMask">
+    
+    
+
+    <meta name="description" content="LCA(Least Common Ancestors)，最近公共祖先，是指在有根树中，找出某两个结点u和v最近的公共祖先。比如在这场图中3和5的最近公共祖先就是2，5和6的最近公共祖先就是4，1和2的最近公共祖先是1 等。 暴力若两个节点分别是u,v，首先将其中一个较深的点向上跳，跳到同一高度后两个点一起跳，直到跳到同一个点，这个点即为他们的LCA。这种方法最直接，但复杂度过高，实际做的时候一定会">
+<meta name="keywords" content="算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LCA问题的RMQ与倍增解法 | UncleMask`s Laboratory">
+<meta property="og:url" content="http://yoursite.com/2018/02/01/18-2-1-LCA/index.html">
+<meta property="og:site_name" content="UncleMask`s Laboratory">
+<meta property="og:description" content="LCA(Least Common Ancestors)，最近公共祖先，是指在有根树中，找出某两个结点u和v最近的公共祖先。比如在这场图中3和5的最近公共祖先就是2，5和6的最近公共祖先就是4，1和2的最近公共祖先是1 等。 暴力若两个节点分别是u,v，首先将其中一个较深的点向上跳，跳到同一高度后两个点一起跳，直到跳到同一个点，这个点即为他们的LCA。这种方法最直接，但复杂度过高，实际做的时候一定会">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://gss0.bdstatic.com/-4o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=631dcd268b26cffc7d27b7e0d86821f5/64380cd7912397dd751c23bb5082b2b7d0a2872c.jpg">
+<meta property="og:image" content="http://img.blog.csdn.net/20160605101644824?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:updated_time" content="2018-02-01T04:58:50.496Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LCA问题的RMQ与倍增解法 | UncleMask`s Laboratory">
+<meta name="twitter:description" content="LCA(Least Common Ancestors)，最近公共祖先，是指在有根树中，找出某两个结点u和v最近的公共祖先。比如在这场图中3和5的最近公共祖先就是2，5和6的最近公共祖先就是4，1和2的最近公共祖先是1 等。 暴力若两个节点分别是u,v，首先将其中一个较深的点向上跳，跳到同一高度后两个点一起跳，直到跳到同一个点，这个点即为他们的LCA。这种方法最直接，但复杂度过高，实际做的时候一定会">
+<meta name="twitter:image" content="https://gss0.bdstatic.com/-4o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=631dcd268b26cffc7d27b7e0d86821f5/64380cd7912397dd751c23bb5082b2b7d0a2872c.jpg">
+    
+    
+    
+      <link rel="icon" type="image/x-icon" href="/favicon.png">
+    
+    <link rel="stylesheet" href="../../../../css/uno.css">
+    <link rel="stylesheet" href="../../../../css/highlight.css">
+    <link rel="stylesheet" href="../../../../css/archive.css">
+    <link rel="stylesheet" href="../../../../css/china-social-icon.css">
+
+</head>
+<body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+
+<header class="panel-cover panel-cover--collapsed">
+
+
+  <div class="panel-main">
+
+  
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        
+
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage">UncleMask`s Laboratory</a></h1>
+        <hr class="panel-cover__divider" />
+
+        
+        <p class="panel-cover__description">
+          Just Do What You Want
+        </p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+
+              
+                
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">首页</a></li>
+              
+                
+                <li class="navigation__item"><a href="/about" title="" class="">关于</a></li>
+              
+                
+                <li class="navigation__item"><a href="/archive" title="" class="">统计</a></li>
+              
+
+            </ul>
+          </nav>
+
+          <!-- ----------------------------
+To add a new social icon simply duplicate one of the list items from below
+and change the class in the <i> tag to match the desired social network
+and then add your link to the <a>. Here is a full list of social network
+classes that you can use:
+
+    icon-social-500px
+    icon-social-behance
+    icon-social-delicious
+    icon-social-designer-news
+    icon-social-deviant-art
+    icon-social-digg
+    icon-social-dribbble
+    icon-social-facebook
+    icon-social-flickr
+    icon-social-forrst
+    icon-social-foursquare
+    icon-social-github
+    icon-social-google-plus
+    icon-social-hi5
+    icon-social-instagram
+    icon-social-lastfm
+    icon-social-linkedin
+    icon-social-medium
+    icon-social-myspace
+    icon-social-path
+    icon-social-pinterest
+    icon-social-rdio
+    icon-social-reddit
+    icon-social-skype
+    icon-social-spotify
+    icon-social-stack-overflow
+    icon-social-steam
+    icon-social-stumbleupon
+    icon-social-treehouse
+    icon-social-tumblr
+    icon-social-twitter
+    icon-social-vimeo
+    icon-social-xbox
+    icon-social-yelp
+    icon-social-youtube
+    icon-social-zerply
+    icon-mail
+
+-------------------------------->
+
+<!-- add social info here -->
+
+
+
+<nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+    
+      <!-- Qzone -->
+      <li class="navigation__item">
+        <a href="https://user.qzone.qq.com/934560304" title="Huno on Qzone">
+          <i class='icon cs-icon-qzone'></i>
+          <span class="label">Qzone</span>
+        </a>
+      </li>
+    
+
+
+    
+    <!-- China social icon -->
+    <!--
+    
+      <li class="navigation__item">
+        <a href="" title="">
+          <i class='icon cs-icon-douban'></i>
+          <span class="label">Douban</span>
+        </a>
+      </li>
+
+      <li class="navigation__item">
+        <a href="" title="">
+          <i class='icon cs-icon-weibo'></i>
+          <span class="label">Weibo</span>
+        </a>
+      </li>
+
+    -->
+
+
+
+  </ul>
+</nav>
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner entry">
+            
+
+<article class="post-container post-container--single">
+
+  <header class="post-header">
+    
+    <h1 class="post-title">LCA问题的RMQ与倍增解法</h1>
+
+    
+
+    <div class="post-meta">
+      <time datetime="2018-02-01" class="post-meta__date date">2018-02-01</time> 
+
+      <span class="post-meta__tagss tags">
+
+          
+            <font class="categories">
+            &#8226; 分类:
+            <a class="categories-link" href="../../../../categories/计算机/">计算机</a>, <a class="categories-link" href="../../../../categories/计算机/原创/">原创</a>
+            </font>
+          
+
+          
+             &#8226; 标签:
+            <font class="tags">
+              <a class="tags-link" href="../../../../tags/算法/">算法</a>
+            </font>
+          
+
+      </span>
+    </div>
+    
+    
+
+  </header>
+
+  <section id="post-content" class="article-content post">
+    <p>LCA(Least Common Ancestors)，最近公共祖先，是指在有根树中，找出某两个结点u和v最近的公共祖先。<br><img src="https://gss0.bdstatic.com/-4o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=631dcd268b26cffc7d27b7e0d86821f5/64380cd7912397dd751c23bb5082b2b7d0a2872c.jpg" alt=""><br>比如在这场图中3和5的最近公共祖先就是2，5和6的最近公共祖先就是4，1和2的最近公共祖先是1 等。</p>
+<h2 id="暴力"><a href="#暴力" class="headerlink" title="暴力"></a>暴力</h2><p>若两个节点分别是u,v，首先将其中一个较深的点向上跳，跳到同一高度后两个点一起跳，直到跳到同一个点，这个点即为他们的LCA。这种方法最直接，但复杂度过高，实际做的时候一定会TLE。</p>
+<h2 id="倍增寻找"><a href="#倍增寻找" class="headerlink" title="倍增寻找"></a>倍增寻找</h2><p>这种方法是暴力解法的一种优化，首先是记录每一个点往上跳\(2 ^ j\)步后的点，这一步骤可以通过DP来实现。每个点向上跳\(2 ^ 0\)个点后的点都是他们的父节点，另外通过\(2 ^ j = 2 ^ {j - 1} + 2 ^ {j - 1}\)可知，i的\(2^j\)祖先就是i的\(2^{j-1}\)祖先的\(2^{j-1}\)祖先，故而\(p[i][j]=p[p[i][j-1]][j-1]\)。<br>然后得到了p数组之后，通过记录的深度d计算出可以跳的最大的j，也就是\([log_2 d]+1\)（向上取整）。从j的最大值向下迭代，若此时的\(p[u][j] != p[v][j]\)则一起向上跳\(2^j\)个点，如此循环，直到结束。<br>核心代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">int lca(int u, int v)</span><br><span class="line">&#123;</span><br><span class="line">    if (d[u] &lt; d[v])</span><br><span class="line">        swap(u, v);                 //我们希望u是较深的点。</span><br><span class="line">    for (int i = jmax; i &gt;= 0; i--) //这个循环在完成第一步。</span><br><span class="line">    &#123;</span><br><span class="line">        if (d[v] &lt;= d[p[u][i]]) //不可以丢掉“=“哦</span><br><span class="line">        &#123;</span><br><span class="line">            u = p[u][i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    if (u == v)</span><br><span class="line">        return u; //如果v是u的祖先，就可以直接返回结果了。</span><br><span class="line">    for (int i = jmax; i &gt;= 0; i--)</span><br><span class="line">    &#123;</span><br><span class="line">        if (p[u][i] != p[v][i]) //第二步。</span><br><span class="line">        &#123;</span><br><span class="line">            u = p[u][i];</span><br><span class="line">            v = p[v][i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return p[u][0];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="RMQ-时间戳"><a href="#RMQ-时间戳" class="headerlink" title="RMQ+时间戳"></a>RMQ+时间戳</h2><p>对于时间戳这个概念我也是第一次见，简单来说就是一个树被dps时的访问顺序。<br><img src="http://img.blog.csdn.net/20160605101644824?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt=""><br>在这个树中DFS遍历序列就是1 2 3 2 4 2 5 2 1 6 7 8 7 6 1。很多点被访问了不止一次。很容易想到，对于任意两个点，从一个点到另一个点，进行dfs时必定要经过它的LCA。比如4和6，遍历大致顺序为1 2 4 2 1 6，从4到6的过程中就回到了他们的LCA也就是1。所以如果一个树的编号是以先序遍历的方式来编号的话可以先通过dps整个树来得到一串时间戳，然后再查找两个点之间的那串时间戳中最小的点，那个点即为两点的LCA。其中查找的过程可以用RMQ来解决，复杂度较低。<br>对于这种方法局限性较大，不过代码很方便，可以视情况使用。<br>&nbsp;<br>上面两种方法都算是在线查找的方案，其实还有一种Tarjan算法，是离线的，可以通过遍历一次树即可得到所有的结果，之后会有一篇blog专门写这部分。</p>
+<h2 id="重要结论"><a href="#重要结论" class="headerlink" title="重要结论"></a>重要结论</h2><p>对于LCA来说他目前可以用到的最大的用处就是计算树上任意两点的距离。<br>若树上两点(u,v)的路径长度为Long[u,v]，<br>long[i]表示i到root的长度，<br>则\(Long[u,v] = long[u]+long[v]-2*long[lca(u,v)]\)</p>
+<h2 id="相关例题"><a href="#相关例题" class="headerlink" title="相关例题"></a>相关例题</h2><p>HDOJ2586</p>
+
+  </section>
+
+  <section class="post-comments">
+
+    <!-- 将评论系统（例如Disqus、多说、友言、畅言等）提供的代码片段粘贴在这里 -->
+    <!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js"></script>
+<!-- UY END -->
+</section>
+
+
+</article>
+
+
+            <footer class="footer">
+
+    <span class="footer__copyright">&copy; 2014-2015. | 由<a href="https://hexo.io/">Hexo</a>强力驱动 | 主题<a href="https://github.com/someus/huno">Huno</a></span>
+    
+</footer>
+        </div>
+    </div>
+
+    <!-- js files -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/scale.fix.js"></script>
+    
+
+    
+
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript"> 
+        $(document).ready(function(){
+            MathJax.Hub.Config({ 
+                tex2jax: {inlineMath: [['[latex]','[/latex]'], ['\\(','\\)']]} 
+            });
+        });
+    </script>
+
+
+    
+
+    <script src="/js/awesome-toc.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.awesome_toc({
+                overlay: true,
+                contentId: "post-content",
+            });
+        });
+    </script>
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script>
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?cb1e9b3654373aff6266db0f8db7569d";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+  })();
+  </script>
+  
+    
+    <!--kill ie6 -->
+<!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+
+</body>
+</html>
